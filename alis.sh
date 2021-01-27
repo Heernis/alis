@@ -582,7 +582,6 @@ function partition() {
         mount -o "$PARTITION_OPTIONS" "$DEVICE_ROOT" /mnt
         btrfs subvolume create /mnt/@
         btrfs subvolume create /mnt/@home
-        btrfs subvolume create /mnt/@var
         btrfs subvolume create /mnt/@snapshots
         umount /mnt
 
@@ -596,8 +595,8 @@ function partition() {
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
+        mkdir /mnt/@/boot
+        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/@/boot
     fi
 
     # swap
