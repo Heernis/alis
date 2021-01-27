@@ -585,13 +585,12 @@ function partition() {
         btrfs subvolume create /mnt/@snapshots
         umount /mnt
 
-        mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt/@
+        mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{boot,home,var,snapshots}
+        mkdir /mnt/{boot,@home,@snapshots}
         mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
-        mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/@home
-        mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/@var
-        mount -o "subvol=@snapshots,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/@snapshots
+        mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
+        mount -o "subvol=@snapshots,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/snapshots
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
@@ -613,13 +612,8 @@ function partition() {
     fi
 
     # set variables
-    if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
-    BOOT_DIRECTORY=/@/boot
-    ESP_DIRECTORY=/@/boot
-    else
     BOOT_DIRECTORY=/boot
     ESP_DIRECTORY=/boot
-    fi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
