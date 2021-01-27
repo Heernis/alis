@@ -613,8 +613,13 @@ function partition() {
     fi
 
     # set variables
+    if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
+    BOOT_DIRECTORY=/@/boot
+    ESP_DIRECTORY=/@/boot
+    else
     BOOT_DIRECTORY=/boot
     ESP_DIRECTORY=/boot
+    fi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
